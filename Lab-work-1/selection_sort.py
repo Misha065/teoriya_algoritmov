@@ -1,3 +1,4 @@
+# Код згідно з Лістингом 2
 def selection_sort(arr):
     n = len(arr)
     comparisons = 0
@@ -27,7 +28,7 @@ def selection_sort(arr):
     return arr, comparisons, assignments
 
 # --- Приклад використання ---
-#  ВАРІАНТ 20 
+# ВАШ ВАРІАНТ 20
 my_list = [86, 36, 14, 50, 64, 21, 2, 83, 82]
 
 print(f"Оригінальний список (Варіант 20): {my_list}")
