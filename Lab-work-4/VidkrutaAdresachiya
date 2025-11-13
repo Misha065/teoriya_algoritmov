@@ -1,0 +1,61 @@
+
+import re
+
+# Український алфавіт з позиціями букв
+ukr_positions = {
+    'А':1,'Б':2,'В':3,'Г':4,'Ґ':5,'Д':6,'Е':7,'Є':8,'Ж':9,'З':10,'И':11,'І':12,'Ї':13,'Й':14,
+    'К':15,'Л':16,'М':17,'Н':18,'О':19,'П':20,'Р':21,'С':22,'Т':23,'У':24,'Ф':25,'Х':26,'Ц':27,
+    'Ч':28,'Ш':29,'Щ':30,'Ь':31,'Ю':32,'Я':33
+}
+
+# Речення для варіанта 20
+sentence = "Не той друг, хто медом маже, а той, хто правду каже"
+
+# Виділяємо лише слова і переводимо у верхній регістр
+words = re.findall(r"[А-ЯҐЄІЇа-яґєії́ґ]+", sentence, flags=re.UNICODE)
+words = [w.upper() for w in words]
+
+# Розмір хеш-таблиці
+m = 13
+
+# Функції хешування
+def h1(K): return K % m
+def h2(K): return 1 + (K % (m - 1))
+
+# Обчислення ключа K як суми позицій букв
+def word_key(word):
+    return sum(ukr_positions.get(ch, 0) for ch in word)
+
+# Створюємо порожню таблицю
+table = [None] * m
+
+# Вставка за методом подвійного хешування
+def double_hash_insert(table, key, word):
+    """Повертає остаточну позицію, куди вставлено слово."""
+    for i in range(m):
+        idx = (h1(key) + i * h2(key)) % m
+        if table[idx] is None:
+            table[idx] = word
+            return idx
+    return None  # якщо таблиця заповнена
+
+# --- Основна програма ---
+print("Подвійне хешування (m = 13)\n")
+
+for w in words:
+    K = word_key(w)
+    h1v, h2v = h1(K), h2(K)
+    seq = []
+    for i in range(m):
+        idx = (h1v + i * h2v) % m
+        seq.append(idx)
+        if table[idx] is None:
+            table[idx] = w
+            print(f"{w:10s}  K={K:3d}  h1={h1v:2d}  h2={h2v:2d}  "
+                  f"Послідовність: {seq}  →  Остаточна позиція {idx}")
+            break
+
+# --- Виведення заповненої таблиці ---
+print("\nФінальна хеш-таблиця (відкрита адресація):")
+for i, val in enumerate(table):
+    print(f"{i:2d}: {val}")
