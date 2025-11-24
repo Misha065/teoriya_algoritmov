@@ -1,0 +1,17 @@
+def binary_search(A, key):
+    low = 0
+    high = len(A) - 1
+
+    while low <= high:
+        mid = (low + high) // 2
+        if A[mid] == key:
+            return mid
+        elif A[mid] < key:
+            low = mid + 1
+        else:
+            high = mid - 1
+    
+    return -1
+
+print(binary_search([15,21,29,30,67,76,82,85,90], 65))  # -1
+print(binary_search([15,21,29,30,67,76,82,85,90], 67))  # 4
