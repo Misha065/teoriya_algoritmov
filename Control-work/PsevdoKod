@@ -1,0 +1,12 @@
+BinarySearch(A, key):
+    low = 0
+    high = n - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if A[mid] == key:
+            return mid
+        if A[mid] < key:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
