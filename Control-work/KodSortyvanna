@@ -1,0 +1,8 @@
+A = [90, 29, 76, 21, 30, 15, 82, 67, 85]
+
+for i in range(len(A)-1):
+    for j in range(len(A)-1-i):
+        if A[j] > A[j+1]:
+            A[j], A[j+1] = A[j+1], A[j]
+
+print("Після сортування:", A)
