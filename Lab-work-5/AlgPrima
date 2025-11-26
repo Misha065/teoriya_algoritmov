@@ -1,51 +1,51 @@
 #include <iostream>
+#include <vector>
+#include <limits>
 using namespace std;
 
-#define V 8
-#define INF 999999
-
 int main() {
+    const int INF = 1e9;
 
-    int G[V][V] = {
-        //1  2  3  4  5  6  7  8
-        { 0, 6, 7, 3, 0, 0, 0, 0 }, //1
-        { 6, 0, 2, 9, 0, 9, 0, 0 }, //2
-        { 7, 2, 0, 0, 0, 7, 0, 4 }, //3
-        { 3, 9, 0, 0, 5, 0, 0, 0 }, //4
-        { 0, 0, 0, 5, 0, 4, 1, 0 }, //5
-        { 0, 0, 7, 0, 4, 0, 8, 7 }, //6
-        { 0, 0, 0, 0, 1, 8, 0, 5 }, //7
-        { 0, 0, 4, 0, 0, 7, 5, 0 }  //8
+    vector<vector<int>> g = {
+        {0,6,7,3,0,0,0,0},
+        {6,0,2,9,0,9,0,0},
+        {7,2,0,0,0,7,0,4},
+        {3,9,0,0,5,0,0,0},
+        {0,0,0,5,0,4,1,0},
+        {0,9,7,0,4,0,8,0},
+        {0,0,0,0,1,8,0,5},
+        {0,0,4,0,0,0,5,0}
     };
 
-    bool selected[V] = { false };
-    selected[0] = true; // старт з вершини 1
+    int n = 8;
+    vector<int> min_e(n, INF), sel_e(n, -1);
+    vector<bool> used(n, false);
 
-    int no_edge = 0;
+    min_e[0] = 0;
+    int total = 0;
 
-    cout << "Edge : Weight\n";
+    for (int i = 0; i < n; i++) {
+        int v = -1;
 
-    while (no_edge < V - 1) {
-        int min = INF;
-        int x = 0, y = 0;
+        for (int j = 0; j < n; j++)
+            if (!used[j] && (v == -1 || min_e[j] < min_e[v]))
+                v = j;
 
-        for (int i = 0; i < V; i++) {
-            if (selected[i]) {
-                for (int j = 0; j < V; j++) {
-                    if (!selected[j] && G[i][j] != 0) {
-                        if (G[i][j] < min) {
-                            min = G[i][j];
-                            x = i;
-                            y = j;
-                        }
-                    }
-                }
+        used[v] = true;
+        total += min_e[v];
+
+        if (sel_e[v] != -1)
+            cout << sel_e[v]+1 << " - " << v+1 << endl;
+
+        for (int to = 0; to < n; to++)
+            if (g[v][to] < min_e[to]) {
+                min_e[to] = g[v][to];
+                sel_e[to] = v;
             }
-        }
+    }
 
-        cout << x + 1 << " - " << y + 1 << " : " << G[x][y] << endl;
-        selected[y] = true;
-        no_edge++;
+    cout << "Total weight = " << total;
+}
     }
 
     return 0;
