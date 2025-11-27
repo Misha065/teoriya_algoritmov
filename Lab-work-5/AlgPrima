@@ -46,7 +46,3 @@ int main() {
 
     cout << "Total weight = " << total;
 }
-    }
-
-    return 0;
-}
