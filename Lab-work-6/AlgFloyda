@@ -1,11 +1,30 @@
 def floyd(W):
-    n = len(W) - 1
+    n = len(W)
     D = [row[:] for row in W]
 
-    for k in range(1, n+1):
-        for i in range(1, n+1):
-            for j in range(1, n+1):
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
                 if D[i][j] > D[i][k] + D[k][j]:
                     D[i][j] = D[i][k] + D[k][j]
-
     return D
+
+
+W = [
+    [0, 9, 7, 3, 8, 6, 9, 11],
+    [9, 0, 2, 9, 12, 9, 11, 6],
+    [7, 2, 0, 10, 10, 11, 9, 4],
+    [3, 9, 10, 0, 5, 9, 6, 11],
+    [8, 12, 10, 5, 0, 4, 1, 6],
+    [6, 9, 11, 9, 4, 0, 5, 7],
+    [9, 11, 9, 6, 1, 5, 0, 5],
+    [11, 6, 4, 11, 6, 7, 5, 0]
+]
+
+# Запуск алгоритму
+D = floyd(W)
+
+# Вивід результату
+print("Матриця найкоротших шляхів:")
+for row in D:
+    print(row)
